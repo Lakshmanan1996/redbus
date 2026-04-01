@@ -6,9 +6,9 @@
 FROM node:20 AS build
 
 WORKDIR /app
-COPY package*.json ./
+COPY front-end-redbus/package*.json ./
 RUN npm install
-COPY . .
+COPY front-end-redbus/ .
 RUN npm run build
 
 # Runtime stage
