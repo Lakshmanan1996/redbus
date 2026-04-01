@@ -1,23 +1,10 @@
-# =========================================================
-#  Node.js – Multi Stage (Production)
-# =========================================================
-
-# Build stage
-FROM node:20 AS build
+FROM node:20
 
 WORKDIR /app
-
-# ✅ FIXED (remove folder prefix)
-COPY package*.json ./
-RUN npm install 
 
 COPY . .
 
-# Runtime stage
-FROM node:20-alpine
-
-WORKDIR /app
-COPY --from=build /app ./
+RUN npm install
 
 EXPOSE 3000
 
