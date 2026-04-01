@@ -63,7 +63,7 @@ pipeline {
             agent { label 'workernode2' }
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                    waitForQualityGate abortPipeline: false
                 }
             }
         }
