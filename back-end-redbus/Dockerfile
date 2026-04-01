@@ -9,7 +9,7 @@ WORKDIR /app
 
 # ✅ FIXED (remove folder prefix)
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install 
 
 COPY . .
 
