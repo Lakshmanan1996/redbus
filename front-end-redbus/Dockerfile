@@ -1,21 +1,29 @@
-# =========================================================
-#  React (Frontend – Production Build)
-# =========================================================
-
-# Build stage
-FROM node:20 AS build
+# ---------- BUILD STAGE ----------
+FROM node:20-alpine AS build
 
 WORKDIR /app
-COPY front-end-redbus/package*.json ./
+
+# Install dependencies
+COPY package.json package-lock.json ./
 RUN npm install
-COPY front-end-redbus/ .
+
+# Copy source
+COPY . .
+
+# Build app
 RUN npm run build
 
-# Runtime stage
+# ---------- NGINX STAGE ----------
 FROM nginx:alpine
 
-COPY --from=build /app/dist /usr/share/nginx/html
+# Remove default nginx config
+RUN rm -rf /usr/share/nginx/html/*
 
+# Copy build output
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port
 EXPOSE 80
 
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
