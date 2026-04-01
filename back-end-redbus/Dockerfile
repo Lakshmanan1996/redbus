@@ -10,7 +10,6 @@ COPY back-end-redbus/package*.json ./
 RUN npm install
 COPY back-end-redbus/ .
 
-RUN npm run build
 
 # Runtime stage
 FROM node:20-alpine
