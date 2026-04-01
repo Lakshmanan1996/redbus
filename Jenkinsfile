@@ -118,11 +118,15 @@ pipeline {
                 }
 
                 sh """
-                docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}
-                docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:latest
+                
 
                 docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER} 
                 docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE}:latest
+
+                docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}
+                docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:latest
+
+                
                 """
             }
         }
