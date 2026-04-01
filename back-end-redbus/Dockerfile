@@ -6,10 +6,12 @@
 FROM node:20 AS build
 
 WORKDIR /app
-COPY back-end-redbus/package*.json ./
-RUN npm install
-COPY back-end-redbus/ .
 
+# ✅ FIXED (remove folder prefix)
+COPY package*.json ./
+RUN npm install --legacy-peer-deps
+
+COPY . .
 
 # Runtime stage
 FROM node:20-alpine
