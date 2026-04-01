@@ -6,9 +6,9 @@
 FROM node:20 AS build
 
 WORKDIR /app
-COPY package*.json ./
+COPY back-end-redbus/package*.json ./
 RUN npm install
-COPY . .
+COPY back-end-redbus/ .
 
 RUN npm run build
 
