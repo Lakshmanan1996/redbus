@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose backend port (check app.js, usually 5000 or 3000)
-EXPOSE 3000
+EXPOSE 3020
 
 # Start the app
 CMD ["node", "app.js"]
