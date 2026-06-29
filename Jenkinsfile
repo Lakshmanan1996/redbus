@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     options {
         timestamps()
@@ -19,7 +19,7 @@ pipeline {
 
         /* ===================== CHECKOUT ===================== */
         stage('Checkout Code') {
-            agent { label 'workernode1' }
+            
             steps {
                 checkout([$class: 'GitSCM',
                     branches: [[name: 'master']],
@@ -30,7 +30,7 @@ pipeline {
 
         /* ===================== STASH SOURCE ===================== */
         stage('Stash Source') {
-            agent { label 'workernode1' }
+            
             steps {
                 stash includes: '**/*', name: 'source-code'
             }
@@ -38,7 +38,7 @@ pipeline {
 
         /* ===================== SONARQUBE ===================== */
         stage('SonarQube Analysis') {
-            agent { label 'workernode2' }
+            
             steps {
                 unstash 'source-code'
 
@@ -60,7 +60,7 @@ pipeline {
         /*===================== QUALITY GATE ===================== */
         
         stage('Quality Gate') {
-            agent { label 'workernode2' }
+            
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: false
@@ -71,7 +71,7 @@ pipeline {
 
         /* ===================== DOCKER BUILD ===================== */
         stage('Docker Build') {
-            agent { label 'workernode3' }
+            
             steps {
                 unstash 'source-code'
 
@@ -94,7 +94,7 @@ pipeline {
 
         /* ===================== TRIVY SCAN ===================== */
         stage('Trivy Scan') {
-            agent { label 'workernode3' }
+            
             steps {
                 sh """
                  trivy image --exit-code 0 --severity HIGH,CRITICAL ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}
@@ -105,7 +105,7 @@ pipeline {
 
         /* ===================== PUSH TO DOCKER HUB ===================== */
         stage('Push Image') {
-            agent { label 'workernode3' }
+            
             steps {
                 unstash 'source-code'
 
